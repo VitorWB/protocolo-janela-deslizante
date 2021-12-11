@@ -43,7 +43,6 @@ int main(void) {
  
     while(1) {
         printf("Enter message : ");
-        // gets(message);
         fgets(message, sizeof(message), stdin);
          
         //send the message
@@ -56,7 +55,7 @@ int main(void) {
         //clear the buffer by filling null, it might have previously received data
         memset(buf,'\0', BUFLEN);
         //try to receive some data, this is a blocking call
-        if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, (socklen_t*)&slen) == -1)
+        if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, (socklen_t*) &slen) == -1)
         {
             die("recvfrom()");
         }
