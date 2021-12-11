@@ -1,24 +1,25 @@
 /*
     Simple udp client
 */
-#include<stdio.h> //printf
-#include<string.h> //memset
-#include<stdlib.h> //exit(0);
-#include<arpa/inet.h>
-#include<sys/socket.h>
- 
+#include <iostream>
+#include <stdio.h> //printf
+#include <string.h> //memset
+#include <stdlib.h> //exit(0);
+#include <arpa/inet.h>
+#include <sys/socket.h>
+
+using namespace std;
+
 #define SERVER "127.0.0.1"
 #define BUFLEN 512  //Max length of buffer
 #define PORT 8888   //The port on which to send data
  
-void die(char *s)
-{
+void die(char *s) {
     perror(s);
     exit(1);
 }
  
-int main(void)
-{
+int main(void) {
     struct sockaddr_in si_other;
     int s, i, slen=sizeof(si_other);
     char buf[BUFLEN];
@@ -40,10 +41,10 @@ int main(void)
         exit(1);
     }
  
-    while(1)
-    {
+    while(1) {
         printf("Enter message : ");
-        gets(message);
+        // gets(message);
+        fgets(message, sizeof(message), stdin);
          
         //send the message
         if (sendto(s, message, strlen(message) , 0 , (struct sockaddr *) &si_other, slen)==-1)
@@ -55,7 +56,7 @@ int main(void)
         //clear the buffer by filling null, it might have previously received data
         memset(buf,'\0', BUFLEN);
         //try to receive some data, this is a blocking call
-        if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen) == -1)
+        if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, (socklen_t*)&slen) == -1)
         {
             die("recvfrom()");
         }
@@ -63,6 +64,6 @@ int main(void)
         puts(buf);
     }
  
-    close(s);
+    die((char *)s);
     return 0;
 }

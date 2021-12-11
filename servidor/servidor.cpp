@@ -50,7 +50,7 @@ int main(void)
          
         //try to receive some data, this is a blocking call
         if ((recv_len = recvfrom(s, buf, BUFLEN, 0, 
-        (struct sockaddr *) &si_other, &slen)) == -1)
+        (struct sockaddr *) &si_other, (socklen_t*) &slen)) == -1)
         {
             die("recvfrom()");
         }
@@ -67,6 +67,6 @@ int main(void)
         }
     }
  
-    close(s);
+    die((char *)s);
     return 0;
 }
